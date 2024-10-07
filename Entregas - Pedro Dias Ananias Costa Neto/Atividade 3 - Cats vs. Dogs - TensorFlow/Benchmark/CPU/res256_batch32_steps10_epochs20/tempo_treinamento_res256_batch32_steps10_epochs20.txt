@@ -1,1 +1,1 @@
-Tempo total de treinamento: 149.02 segundos
+Tempo total de treinamento: 194.52 segundos
