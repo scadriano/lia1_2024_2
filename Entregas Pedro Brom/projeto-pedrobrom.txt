@@ -1,0 +1,3 @@
+Segue o link do projeto do capitulo 2 feito no jupyter:
+
+http://localhost:8888/lab/tree/projetocap2.ipynb
