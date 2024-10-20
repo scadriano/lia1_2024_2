@@ -50,20 +50,20 @@ while True:
             conf = round(float(item.conf[0]), 2)
             texto = f'{nomeClasse} - {conf}'
 
-            # Adiciona o texto e bounding box na imagem para predições maiores que 0.6
+            # Adiciona o texto e bounding box na imagem para predições maiores ou iguais a 0.6
             if conf >= 0.6:
                 if nomeClasse == 'cabelo_solto':
                     cv2.putText(img, texto, (x1, y1 - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
                     cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 3)
-
-                if conf >=0.7:
-                    # Desenha um retângulo em torno do objeto com base na classe
-                    if nomeClasse in ('com_avental', 'com_luva','cabelo_preso'):
-                        cv2.putText(img, texto, (x1, y1 - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
-                        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 3)
-                    elif nomeClasse in ('sem_avental', 'sem_luva'):
-                        cv2.putText(img, texto, (x1, y1 - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
-                        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 3)
+            # Adiciona o texto e bounding box na imagem para predições maiores ou iguais a 0.7
+            if conf >=0.7:
+                # Desenha um retângulo em torno do objeto com base na classe
+                if nomeClasse in ('com_avental', 'com_luva','cabelo_preso'):
+                    cv2.putText(img, texto, (x1, y1 - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
+                    cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 3)
+                elif nomeClasse in ('sem_avental', 'sem_luva'):
+                    cv2.putText(img, texto, (x1, y1 - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
+                    cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 3)
 
 
     # Exibe o frame com as detecções
