@@ -1,0 +1,55 @@
+import cv2
+from ultralytics import YOLO
+
+# Carregar o modelo YOLO
+model = YOLO(r'C:\aula\venvs\model\best (9).pt')
+
+# Ler o vídeo de entrada
+video = cv2.VideoCapture(r'C:\aula\venvs\video\car-3.mp4')
+
+# Verificar se o vídeo foi carregado corretamente
+if not video.isOpened():
+    print("Erro ao abrir o vídeo.")
+    exit()
+
+# Dicionário de nomes das classes
+class_names = model.names
+
+while True:
+    check, img = video.read()
+    
+    # Verificar se a imagem foi capturada corretamente
+    if not check:
+        print("Fim do vídeo ou erro ao ler o frame.")
+        break
+
+    # Realizar a predição na imagem
+    results = model.predict(img, save=True)
+
+    # Extrair detecções e desenhar na imagem
+    for result in results:
+        for box in result.boxes:
+            # Obter coordenadas, confiança e classe
+            x1, y1, x2, y2 = map(int, box.xyxy[0])  # Convertendo coordenadas para inteiros
+            confidence = box.conf[0]
+            cls = int(box.cls[0])
+            
+            # Obter o nome da classe
+            class_name = class_names[cls] if cls in class_names else 'Desconhecido'
+            
+            # Desenhar o retângulo na imagem
+            cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
+            # Adicionar o nome da classe e a confiança
+            cv2.putText(img, f'{class_name} ({confidence:.2f})', 
+                        (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+
+    # Mostrar o vídeo com as detecções
+    cv2.imshow('Detectando em lia 2024', img)
+
+    # Pressionar 'Esc' para sair
+    if cv2.waitKey(1) == 27:  # 27 é o código da tecla 'Esc'
+        break
+
+# Liberar a captura e destruir todas as janelas
+video.release()
+cv2.destroyAllWindows()
