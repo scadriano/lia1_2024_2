@@ -5,7 +5,7 @@ from ultralytics import YOLO
 model = YOLO('model/PRSbest_v1_2110.pt')
 
 # Abre o vídeo para processamento
-video = cv2.VideoCapture('video/PRSvideo - Trim.mp4')
+video = cv2.VideoCapture('video/PRSvideo - Menor.mp4')
 
 # Verifica se o vídeo foi aberto corretamente
 if not video.isOpened():
@@ -17,14 +17,14 @@ frame_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
 frame_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fps = int(video.get(cv2.CAP_PROP_FPS))
 
-# Define o codec e cria o objeto VideoWriter para salvar o vídeo
-output_video = cv2.VideoWriter('video/saved_predictions.avi',
-                               cv2.VideoWriter_fourcc(*'XVID'),
-                               fps, (frame_width, frame_height))
-
 # Reduz a resolução (opcional)
 new_width = int(frame_width / 2)
 new_height = int(frame_height / 2)
+
+# Define o codec e cria o objeto VideoWriter para salvar o vídeo
+output_video = cv2.VideoWriter('video/saved_predictions.avi',
+                               cv2.VideoWriter_fourcc(*'MJPG'),  # Tente MJPG
+                               fps, (new_width, new_height))  # Certifique-se que a resolução está correta
 
 while True:
     # Lê um frame do vídeo
@@ -37,7 +37,7 @@ while True:
     img = cv2.resize(img, (new_width, new_height))
 
     # Realiza a predição utilizando o modelo YOLO
-    results = model.predict(img, verbose=False, save=True)
+    results = model.predict(img, verbose=False)
 
     # Itera sobre os resultados de detecção
     for obj in results:
@@ -80,10 +80,11 @@ while True:
     output_video.write(img)
 
     # Sai do loop se a tecla 'ESC' for pressionada
-    if cv2.waitKey(1) == 27:  # Ajuste o valor se necessário
+    if cv2.waitKey(30) == 27:  # Ajuste o valor se necessário
         break
 
 # Libera o vídeo, o vídeo de saída e fecha as janelas
 video.release()
 output_video.release()
 cv2.destroyAllWindows()
+
