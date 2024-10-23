@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 6
+names: ['com_avental', 'com_touca', 'com_luva', 'sem_avental', 'sem_touca', 'sem_luva']
+
+roboflow:
+  workspace: sopdetection
+  project: ppe-detection-at-food-inudustry
+  version: 1
+  license: MIT
+  url: https://universe.roboflow.com/sopdetection/ppe-detection-at-food-inudustry/dataset/1
