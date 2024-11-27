@@ -1,1 +1,0 @@
-garrafa, mouse e celular
